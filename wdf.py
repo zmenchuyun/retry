@@ -116,7 +116,7 @@ def showQRImage():
 	else:
 		os.startfile(QRImagePath)
 
-	print('请使用微信扫描二维码以登录')
+	print('Scan')
 
 def waitForLogin():
 	global tip, base_uri, redirect_uri
@@ -126,7 +126,7 @@ def waitForLogin():
 	request = getRequest(url = url)
 	response = wdf_urllib.urlopen(request)
 	data = response.read().decode('utf-8', 'replace')
-	
+
 	# print(data)
 
 	# window.code=500;
@@ -136,10 +136,10 @@ def waitForLogin():
 	code = pm.group(1)
 
 	if code == '201': #已扫描
-		print('成功扫描,请在手机上点击确认以登录')
+		print('Confirm')
 		tip = 0
 	elif code == '200': #已登录
-		print('正在登录...')
+		print('Login')
 		regx = r'window.redirect_uri="(\S+?)";'
 		pm = re.search(regx, data)
 		redirect_uri = pm.group(1) + '&fun=new'
@@ -232,11 +232,11 @@ def webwxinit():
 	Ret = dic['BaseResponse']['Ret']
 	if Ret != 0:
 		return False
-		
+
 	return True
 
 def webwxgetcontact():
-	
+
 	url = base_uri + '/webwxgetcontact?pass_ticket=%s&skey=%s&r=%s' % (pass_ticket, skey, int(time.time()))
 
 	request = getRequest(url = url)
@@ -330,7 +330,7 @@ def deleteMember(ChatRoomName, UserNames):
 	Ret = dic['BaseResponse']['Ret']
 	if Ret != 0:
 		return False
-		
+
 	return True
 
 def addMember(ChatRoomName, UserNames):
@@ -369,7 +369,7 @@ def main():
 	except:
 		pass
 
-	
+
 	if not getUUID():
 		print('获取uuid失败')
 		return
@@ -397,7 +397,7 @@ def main():
 
 	ChatRoomName = ''
 	result = []
-	print('开始查找...')
+	print('Start')
 	group_num=int(math.ceil(MemberCount / float(MAX_GROUP_NUM)))
 	for i in range(0, group_num):
 		UserNames = []
@@ -415,7 +415,7 @@ def main():
 		#print '[',progress_str,''.join('-'*(10-len(progress_str))),']',
 		#print '(当前,你被%d人删除,好友共%d人'%(len(result),len(MemberList)),'\r',
 		print('[',progress_str,''.join('-'*(10-len(progress_str))),']', end=' ')
-		print('(当前,你被%d人删除,好友共%d人'%(len(result),len(MemberList)),'\r',end=' ')
+		print('(当前,你被%d人删除,好友共计%d人'%(len(result),len(MemberList)),'\r',end=' ')
 
 		# print '第%s组...' % (i + 1)
 
@@ -458,25 +458,25 @@ def main():
 
 # windows下编码问题修复
 # http://blog.csdn.net/heyuxuanzee/article/details/8442718
-class UnicodeStreamFilter:  
-	def __init__(self, target):  
-		self.target = target  
-		self.encoding = 'utf-8'  
-		self.errors = 'replace'  
-		self.encode_to = self.target.encoding  
-	def write(self, s):  
-		if type(s) == str:  
-			s = s.decode('utf-8')  
-		s = s.encode(self.encode_to, self.errors).decode(self.encode_to)  
-		self.target.write(s)  
-		  
-if sys.stdout.encoding == 'cp936':  
+class UnicodeStreamFilter:
+	def __init__(self, target):
+		self.target = target
+		self.encoding = 'utf-8'
+		self.errors = 'replace'
+		self.encode_to = self.target.encoding
+	def write(self, s):
+		if type(s) == str:
+			s = s.decode('utf-8')
+		s = s.encode(self.encode_to, self.errors).decode(self.encode_to)
+		self.target.write(s)
+
+if sys.stdout.encoding == 'cp936':
 	sys.stdout = UnicodeStreamFilter(sys.stdout)
 
 if __name__ == '__main__' :
 
-	print('本程序的查询结果可能会引起一些心理上的不适,请小心使用...')
-	print('回车键继续...')
+
+	print('Press Enter to continue')
 	try:
 		raw_input()
 		input = raw_input
@@ -485,7 +485,7 @@ if __name__ == '__main__' :
 
 	main()
 
-	print('回车键结束')
+	print('Press Enter to exit')
 	input()
 
 # vim: noet:sts=8:ts=8:sw=8
